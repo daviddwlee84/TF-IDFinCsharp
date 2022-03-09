@@ -9,7 +9,7 @@ During a recent machine learning competition, I struggled to find an example of 
 
 ## Description
 
-TF*IDF = Term Frequency * Inverse Document Frequency
+TF-IDF = Term Frequency * Inverse Document Frequency
 
 TFIDF is a way of representing a document, based upon its keywords holding values that represent their importance within the document. For a complete description of TFIDF, see http://en.wikipedia.org/wiki/Tf%E2%80%93idf
 
@@ -41,9 +41,10 @@ We can see the shining sun, the bright sun.
 
 ## Usage
 
-```txt
+```cs
 string[] documents = LoadYourDocumentsHere();
 
+TFIDF.InitIDFTable(documents, 0);
 double[][] inputs = TFIDF.Transform(documents);
 inputs = TFIDF.Normalize(inputs);
 ```

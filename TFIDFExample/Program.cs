@@ -20,7 +20,8 @@ namespace TFIDFExample
             };
 
             // Apply TF*IDF to the documents and get the resulting vectors.
-            double[][] inputs = TFIDF.Transform(documents, 0);
+            TFIDF.InitIDFTable(documents, 0);
+            double[][] inputs = TFIDF.Transform(documents);
             inputs = TFIDF.Normalize(inputs);
 
             // Display the _vocabularyIDF

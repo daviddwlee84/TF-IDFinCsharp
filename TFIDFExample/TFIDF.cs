@@ -75,7 +75,7 @@ namespace TFIDFExample
         /// <param name="documents">string[]</param>
         /// <param name="vocabularyThreshold">Minimum number of occurences of the term within all documents</param>
         /// <returns>double[][]</returns>
-        public static double[][] Transform(string[] documents, int vocabularyThreshold = 3)
+        public static double[][] InitIDFTable(string[] documents, int vocabularyThreshold = 3)
         {
             List<List<string>> stemmedDocs;
             List<string> vocabulary;
@@ -95,6 +95,45 @@ namespace TFIDFExample
 
             // Transform each document into a vector of tfidf values.
             return TransformToTFIDFVectors(stemmedDocs, _vocabularyIDF);
+        }
+
+        /// <summary>
+        /// Transforms a list of documents into their associated TF*IDF values.
+        /// Assume the vocabulary already exist.
+        /// </summary>
+        /// <param name="documents">string[]</param>
+        /// <returns>double[][]</returns>
+        public static double[][] Transform(string[] documents)
+        {
+            List<List<string>> stemmedDocs = new List<List<string>>();
+            foreach (string doc in documents)
+            {
+                stemmedDocs.Add(StemDocument(doc));
+            }
+            return TransformToTFIDFVectors(stemmedDocs, _vocabularyIDF);
+        }
+
+        /// <summary>
+        /// Get a stemmed document from raw document.
+        /// </summary>
+        /// <param name="documents">string[]</param>
+        /// <returns>double[][]</returns>
+        private static List<string> StemDocument(string document)
+        {
+            string[] tokens = Tokenize(document);
+            List<string> stems = new List<string>();
+            foreach (string token in tokens)
+            {
+                string stripped = Regex.Replace(token, "[^a-zA-Z0-9]", "");
+                if (!StopWords.stopWordsList.Contains(stripped.ToLower()))
+                {
+                    var english = new EnglishWord(stripped);
+                    string stem = english.Stem;
+                    stems.Add(stem);
+                }
+            }
+
+            return stems;
         }
 
         /// <summary>
@@ -125,6 +164,8 @@ namespace TFIDFExample
 
             return vectors.Select(v => v.ToArray()).ToArray();
         }
+
+        // This is how you define different input and return data type with same function name
 
         /// <summary>
         /// Normalizes a TF*IDF array of vectors using L2-Norm.
