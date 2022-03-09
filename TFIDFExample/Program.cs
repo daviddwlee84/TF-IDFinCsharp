@@ -45,6 +45,9 @@ namespace TFIDFExample
                 Console.WriteLine("\n");
             }
 
+            // Console.WriteLine($"{TFIDF.GetLang("enus")}");
+            Console.WriteLine($"{TFIDF.GetLang("en-us")}");
+
             // Console.WriteLine("Press any key ..");
             // Console.ReadKey();
         }

@@ -66,7 +66,29 @@ namespace TFIDFExample
         /// <summary>
         /// Document vocabulary, containing each word's IDF value.
         /// </summary>
-        public static DefaultDictionary<string, double> _vocabularyIDF = new DefaultDictionary<string, double>();
+        public static Dictionary<string, double> _vocabularyIDF = new Dictionary<string, double>();
+
+        /// <summary>
+        /// Regex rule to extract language
+        /// </summary>
+        private static Regex sMarketRegex = new Regex("^(?<LANG>([a-z]{2}))($|-[a-zA-Z]{2}$)", RegexOptions.Compiled);
+
+        // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/constructors
+        // TODO: maybe make this class non-static?!
+        // public TFIDF()
+        // {
+        // }
+
+        // TODO: for different language, we should have different stop words, tokenization, "Stem", and vocabulary IDF table.
+        public static string GetLang(string market)
+        {
+            Match match = sMarketRegex.Match(market);
+            if (match.Success)
+            {
+                return match.Groups[1].Value;
+            }
+            return "";
+        }
 
         /// <summary>
         /// Transforms a list of documents into their associated TF*IDF values.
@@ -142,7 +164,7 @@ namespace TFIDFExample
         /// <param name="stemmedDocs">List of List of string</param>
         /// <param name="vocabularyIDF">Dictionary of string, double (term, IDF)</param>
         /// <returns>double[][]</returns>
-        private static double[][] TransformToTFIDFVectors(List<List<string>> stemmedDocs, DefaultDictionary<string, double> vocabularyIDF)
+        private static double[][] TransformToTFIDFVectors(List<List<string>> stemmedDocs, Dictionary<string, double> vocabularyIDF)
         {
             // Transform each document into a vector of tfidf values.
             List<List<double>> vectors = new List<List<double>>();
@@ -238,7 +260,7 @@ namespace TFIDFExample
             using (FileStream fs = new FileStream(filePath, FileMode.Open))
             {
                 BinaryFormatter formatter = new BinaryFormatter();
-                _vocabularyIDF = (DefaultDictionary<string, double>)formatter.Deserialize(fs);
+                _vocabularyIDF = (Dictionary<string, double>)formatter.Deserialize(fs);
             }
         }
 
