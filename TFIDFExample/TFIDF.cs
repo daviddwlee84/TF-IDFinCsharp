@@ -7,6 +7,11 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+// https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-overview?pivots=dotnet-6-0
+// https://stackoverflow.com/questions/59503393/is-using-the-system-text-json-no-longer-possible-for-serializing-deserialiing
+// https://docs.microsoft.com/en-us/nuget/consume-packages/install-use-packages-dotnet-cli
+// https://www.reddit.com/r/dotnet/comments/np18eh/help_me_with_fixing_the_project_does_not_support/
+// using System.Text.Json;
 
 namespace TFIDFExample
 {
@@ -55,12 +60,13 @@ namespace TFIDFExample
     /// inputs = TFIDF.Normalize(inputs);
     /// 
     /// </summary>
+    // https://www.c-sharpcorner.com/UploadFile/74ce7b/static-class-in-C-Sharp/
     public static class TFIDF
     {
         /// <summary>
         /// Document vocabulary, containing each word's IDF value.
         /// </summary>
-        private static DefaultDictionary<string, double> _vocabularyIDF = new DefaultDictionary<string, double>();
+        public static DefaultDictionary<string, double> _vocabularyIDF = new DefaultDictionary<string, double>();
 
         /// <summary>
         /// Transforms a list of documents into their associated TF*IDF values.
@@ -175,6 +181,7 @@ namespace TFIDFExample
             // Save result to disk.
             using (FileStream fs = new FileStream(filePath, FileMode.Create))
             {
+                // TODO: make this dump JSON
                 BinaryFormatter formatter = new BinaryFormatter();
                 formatter.Serialize(fs, _vocabularyIDF);
             }

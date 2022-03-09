@@ -23,6 +23,14 @@ namespace TFIDFExample
             double[][] inputs = TFIDF.Transform(documents, 0);
             inputs = TFIDF.Normalize(inputs);
 
+            // Display the _vocabularyIDF
+            // (not sure why we can't create the TFIDF instance after change it to non-static)
+            Console.WriteLine($"{TFIDF._vocabularyIDF}\n");
+            foreach (KeyValuePair<string, double> kvp in TFIDF._vocabularyIDF)
+            {
+                Console.WriteLine($"{kvp.Key}: {kvp.Value}");
+            }
+
             // Display the output.
             for (int index = 0; index < inputs.Length; index++)
             {
