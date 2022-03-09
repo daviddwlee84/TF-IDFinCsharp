@@ -1,5 +1,4 @@
-TF*IDF in C# .NET
-=========
+# TF*IDF in C# .NET
 
 Tutorial
 http://www.primaryobjects.com/CMS/Article157.aspx
@@ -20,7 +19,7 @@ The class returns a matrix of doubles. Each row in the matrix represents a vecto
 
 For example:
 
-```
+```txt
 The sun in the sky is bright.
 -0.405465108108164, 0, -0.405465108108164, 0, 0,
 
@@ -32,7 +31,7 @@ In the example above, the vocabulary consists of 5 terms (resulting in 2 rows an
 
 The class includes an optional method for normalizing the resulting vectors, using L2-norm: Xi = Xi / Sqrt(X0^2 + X1^2 + .. + Xn^2). Applying normalization to the above example produces the following result:
 
-```
+```txt
 The sun in the sky is bright.
 -0.707106781186547, 0, -0.707106781186547, 0, 0
 
@@ -42,11 +41,17 @@ We can see the shining sun, the bright sun.
 
 ## Usage
 
-```
+```txt
 string[] documents = LoadYourDocumentsHere();
 
 double[][] inputs = TFIDF.Transform(documents);
 inputs = TFIDF.Normalize(inputs);
+```
+
+Build and Run From Terminal
+
+```ps1
+.\build_and_run.ps1
 ```
 
 ## Sources
@@ -61,6 +66,7 @@ TF*IDF normalization via L2-Norm
 http://pyevolve.sourceforge.net/wordpress/?tag=inverse-document-frequency
 
 ## License
+
 Copyright (c) 2013 Kory Becker http://www.primaryobjects.com/kory-becker.aspx
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
