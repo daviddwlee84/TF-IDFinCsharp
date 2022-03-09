@@ -14,7 +14,9 @@ namespace TFIDFExample
             string[] documents =
             {
                 "The sun in the sky is bright.",
-                "We can see the shining sun, the bright sun."
+                "We can see the shining sun, the bright sun.",
+                "Seven States Hit Hardest by Gas Prices All Have This in Common",
+                "Here's how oil and gas prices could be affected by Russia's invasion of Ukraine (CNBC)"
             };
 
             // Apply TF*IDF to the documents and get the resulting vectors.
@@ -34,8 +36,8 @@ namespace TFIDFExample
                 Console.WriteLine("\n");
             }
 
-            Console.WriteLine("Press any key ..");
-            Console.ReadKey();
+            // Console.WriteLine("Press any key ..");
+            // Console.ReadKey();
         }
     }
 }

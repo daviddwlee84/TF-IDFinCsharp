@@ -10,6 +10,26 @@ using System.Threading.Tasks;
 
 namespace TFIDFExample
 {
+    // https://stackoverflow.com/questions/15622622/analogue-of-pythons-defaultdict
+    public class DefaultDictionary<TKey, TValue> : Dictionary<TKey, TValue> where TValue : new()
+    {
+        public new TValue this[TKey key]
+        {
+            get
+            {
+                TValue val;
+                if (!TryGetValue(key, out val))
+                {
+                    val = new TValue();
+                    Add(key, val);
+                }
+                return val;
+            }
+            set { base[key] = value; }
+        }
+    }
+
+
     /// <summary>
     /// Copyright (c) 2013 Kory Becker http://www.primaryobjects.com/kory-becker.aspx
     /// 
@@ -40,7 +60,7 @@ namespace TFIDFExample
         /// <summary>
         /// Document vocabulary, containing each word's IDF value.
         /// </summary>
-        private static Dictionary<string, double> _vocabularyIDF = new Dictionary<string, double>();
+        private static DefaultDictionary<string, double> _vocabularyIDF = new DefaultDictionary<string, double>();
 
         /// <summary>
         /// Transforms a list of documents into their associated TF*IDF values.
@@ -77,7 +97,7 @@ namespace TFIDFExample
         /// <param name="stemmedDocs">List of List of string</param>
         /// <param name="vocabularyIDF">Dictionary of string, double (term, IDF)</param>
         /// <returns>double[][]</returns>
-        private static double[][] TransformToTFIDFVectors(List<List<string>> stemmedDocs, Dictionary<string, double> vocabularyIDF)
+        private static double[][] TransformToTFIDFVectors(List<List<string>> stemmedDocs, DefaultDictionary<string, double> vocabularyIDF)
         {
             // Transform each document into a vector of tfidf values.
             List<List<double>> vectors = new List<List<double>>();
@@ -170,7 +190,7 @@ namespace TFIDFExample
             using (FileStream fs = new FileStream(filePath, FileMode.Open))
             {
                 BinaryFormatter formatter = new BinaryFormatter();
-                _vocabularyIDF = (Dictionary<string, double>)formatter.Deserialize(fs);
+                _vocabularyIDF = (DefaultDictionary<string, double>)formatter.Deserialize(fs);
             }
         }
 
@@ -185,7 +205,7 @@ namespace TFIDFExample
         private static List<string> GetVocabulary(string[] docs, out List<List<string>> stemmedDocs, int vocabularyThreshold)
         {
             List<string> vocabulary = new List<string>();
-            Dictionary<string, int> wordCountList = new Dictionary<string, int>();
+            DefaultDictionary<string, int> wordCountList = new DefaultDictionary<string, int>();
             stemmedDocs = new List<List<string>>();
 
             int docIndex = 0;
@@ -220,15 +240,7 @@ namespace TFIDFExample
                             if (stem.Length > 0)
                             {
                                 // Build the word count list.
-                                if (wordCountList.ContainsKey(stem))
-                                {
-                                    wordCountList[stem]++;
-                                }
-                                else
-                                {
-                                    wordCountList.Add(stem, 0);
-                                }
-
+                                wordCountList[stem]++;
                                 stemmedDoc.Add(stem);
                             }
                         }
